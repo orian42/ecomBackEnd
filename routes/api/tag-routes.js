@@ -36,7 +36,7 @@ router.post('/', async (req, res) => {
   // create a new tag
   try {
     const newTag = await Tag.create({
-      tag_name: 'noisy',
+      tag_name: req.body.tag_name,
     });
     res.status(200).json(newTag);
   } catch (error) {
@@ -49,7 +49,7 @@ router.put('/:id', async (req, res) => {
   // update a tag's name by its `id` value
   try {
     const updTag = await Tag.update({
-      tag_name: 'REALLY noisy',
+      tag_name: req.body.tag_name,
     },
       {
         where: {
