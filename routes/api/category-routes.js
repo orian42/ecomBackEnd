@@ -3,14 +3,33 @@ const { Category, Product } = require('../../models');
 
 // The `/api/categories` endpoint
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   // find all categories
   // be sure to include its associated Products
+  try {
+    const categoryData = await Category.findAll({
+      order: ['category_name'],
+      include: [{ model: Product }],
+    });
+    res.status(200).json(categoryData);
+  } catch (error) {
+    console.error('Error retrieving categories:', error);
+    res.status(500).json({ error: 'Failed to retrieve categories' });
+  }
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
   // find one category by its `id` value
   // be sure to include its associated Products
+  try {
+    const categoryData = await Category.findByPk(req.params.id, {
+      include: [{ model: Product }]
+    });
+    res.status(200).json(categoryData);
+  } catch (error) {
+    console.error('Error retrieving category:', error);
+    res.status(500).json({ error: 'Failed to retrieve requested category' });
+  }
 });
 
 router.post('/', (req, res) => {
